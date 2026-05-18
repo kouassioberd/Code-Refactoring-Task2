@@ -7,15 +7,20 @@ public class Herbivore : Animal
     {
     }
 
-    protected override int Vision => 8;
+    private const int HerbivoreVision = 8;
+    protected override int Vision => HerbivoreVision;
 
-    protected override int MoveCost => 2;
+    private const int HerbivoreMoveCost = 2;
+    protected override int MoveCost => HerbivoreMoveCost;
 
-    protected override int BiteGain => 18;
+    private const int HerbivoreBiteGain = 18;
+    protected override int BiteGain => HerbivoreBiteGain;
 
-    protected override int ReproduceThreshold => 60;
+    private const int HerbivoreReproduceThreshold = 60;
+    protected override int ReproduceThreshold => HerbivoreReproduceThreshold;
 
-    protected override int InitialEnergy => 30;
+    private const int HerbivoreInitialEnergy = 30;
+    protected override int InitialEnergy => HerbivoreInitialEnergy;
 
     protected override char DisplayGlyph => 'h';
 
