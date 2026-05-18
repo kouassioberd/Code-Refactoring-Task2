@@ -73,18 +73,22 @@ public abstract class Animal : Organism
         ConsumeEnergy(MoveCost);
     }
 
+    private bool CanReproduce()
+    {
+        return Energy >= ReproduceThreshold &&
+               World.EmptyNeighbors8(Pos).Any();
+    }
+
     private void TryReproduce()
     {
-        if (Energy >= ReproduceThreshold)
+        if (!CanReproduce())
         {
-            var empty = World.EmptyNeighbors8(Pos).ToList();
-            if (empty.Count > 0)
-            {
-                var child = MakeChild(empty.Pick()!);
-                SplitEnergyWithChild();
-                World.Add(child);
-            }
+            return;
         }
+        var empty = World.EmptyNeighbors8(Pos).ToList();
+        var child = MakeChild(empty.Pick()!);
+        SplitEnergyWithChild();
+        World.Add(child);
     }
 
     private const double DeathChanceAfterMaxAge = 0.02;
