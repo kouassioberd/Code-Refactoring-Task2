@@ -33,14 +33,6 @@ public abstract class Organism
 
     public virtual ConsoleColor? Color => null;
 
-    public void ApplyColor()
-    {
-        if (Color.HasValue)
-        {
-            Console.ForegroundColor = Color.Value;
-        }
-    }
-
     public Gender Gender { get; }
 
     public virtual void Tick() => Age++;
