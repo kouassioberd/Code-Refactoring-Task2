@@ -17,7 +17,7 @@ public abstract class Organism
 
     public bool IsAlive { get; private set; } = true;
 
-    protected void MoveTo(Point2 newPos)
+    internal void MoveTo(Point2 newPos)
     {
         Pos = World.Wrap(newPos);
     }
