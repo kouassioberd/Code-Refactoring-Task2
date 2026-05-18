@@ -21,25 +21,37 @@ public abstract class Animal : Organism
 
     protected abstract int InitialEnergy { get; }
 
-    protected abstract char SelfGlyph { get; }
+    protected abstract char DisplayGlyph { get; }
 
-    public override char Glyph => SelfGlyph;
+    public override char Glyph => DisplayGlyph;
 
     public override ConsoleColor? Color => ConsoleColor.White;
 
-    public int Energy { get; set; }
+    public int Energy { get;private set; }
 
-    public int MaxAge { get; set; } = 1000;
+    public int MaxAge { get;private set; } = 1000;
 
     public override void Tick()
     {
         base.Tick();
 
+        InitializeEnergy();
+        HuntOrMove();
+        ConsumeEnergy();
+        TryReproduce();
+        HandleDeath();
+    }
+
+    private void InitializeEnergy()
+    {
         if (Age == 1 && Energy == 0)
         {
             Energy = InitialEnergy;
         }
+    }
 
+    private void HuntOrMove()
+    {
         var prey = FindPrey();
         if (prey != null)
         {
@@ -47,31 +59,60 @@ public abstract class Animal : Organism
             if (AreNeighborsOrSame(Pos, prey.Pos) && prey.IsAlive)
             {
                 World.Remove(prey);
-                Energy += BiteGain;
+                GainEnergy(BiteGain);
             }
         }
         else
         {
             Wander();
         }
+    }
 
-        Energy -= MoveCost;
+    private void ConsumeEnergy()
+    {
+        ConsumeEnergy(MoveCost);
+    }
 
-        if (Energy >= ReproduceThreshold)
+    private bool CanReproduce()
+    {
+        return Energy >= ReproduceThreshold &&
+               World.EmptyNeighbors8(Pos).Any();
+    }
+
+    private void TryReproduce()
+    {
+        if (!CanReproduce())
         {
-            var empty = World.EmptyNeighbors8(Pos).ToList();
-            if (empty.Count > 0)
-            {
-                var child = MakeChild(empty.Pick()!);
-                Energy /= 2;
-                World.Add(child);
-            }
+            return;
         }
+        var empty = World.EmptyNeighbors8(Pos).ToList();
+        var child = MakeChild(empty.Pick()!);
+        SplitEnergyWithChild();
+        World.Add(child);
+    }
 
-        if (Energy <= 0 || (Age > MaxAge && Rand.Chance(0.02)))
+    private const double DeathChanceAfterMaxAge = 0.02;
+    private void HandleDeath()
+    {
+        if (Energy <= 0 || (Age > MaxAge && Rand.Chance(DeathChanceAfterMaxAge)))
         {
             World.Remove(this);
         }
+    }
+
+    protected void GainEnergy(int amount)
+    {
+        Energy += amount;
+    }
+
+    protected void ConsumeEnergy(int amount)
+    {
+        Energy -= amount;
+    }
+
+    private void SplitEnergyWithChild()
+    {
+        Energy /= 2;
     }
 
     protected abstract Organism? FindPrey();

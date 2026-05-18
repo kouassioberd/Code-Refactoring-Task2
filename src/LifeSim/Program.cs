@@ -71,7 +71,7 @@ public static class Program
             {
                 if (snapshot.TryGetValue(new Point2(x, y), out var organism))
                 {
-                    organism.ApplyColor();
+                    OrganismRenderer.ApplyColor(organism);
                     Console.Write(organism.Glyph);
                     Console.ResetColor();
                 }

@@ -13,9 +13,19 @@ public abstract class Organism
 
     public World World { get; }
 
-    public Point2 Pos { get; set; }
+    public Point2 Pos { get; protected set; }
 
-    public bool IsAlive { get; set; } = true;
+    public bool IsAlive { get; private set; } = true;
+
+    internal void MoveTo(Point2 newPos)
+    {
+        Pos = World.Wrap(newPos);
+    }
+
+    public void Die()
+    {
+        IsAlive = false;
+    }
 
     public int Age { get; private set; }
 
@@ -23,17 +33,17 @@ public abstract class Organism
 
     public virtual ConsoleColor? Color => null;
 
-    public void ApplyColor()
-    {
-        if (Color.HasValue)
-        {
-            Console.ForegroundColor = Color.Value;
-        }
-    }
-
     public Gender Gender { get; }
 
     public virtual void Tick() => Age++;
 
-    private static Gender PickGender() => Rand.Chance(0.5) ? Gender.Female : Gender.Male;
+    private const double FemaleChance = 0.5;
+
+    private static Gender PickGender()
+    {
+        return Rand.Chance(FemaleChance)
+            ? Gender.Female
+            : Gender.Male;
+    }
+
 }

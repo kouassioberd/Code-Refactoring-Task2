@@ -1,4 +1,5 @@
 namespace LifeSim;
+using System;
 
 public class Herbivore : Animal
 {
@@ -7,21 +8,31 @@ public class Herbivore : Animal
     {
     }
 
-    protected override int Vision => 8;
+    private const int HerbivoreVision = 8;
+    protected override int Vision => HerbivoreVision;
 
-    protected override int MoveCost => 2;
+    private const int HerbivoreMoveCost = 2;
+    protected override int MoveCost => HerbivoreMoveCost;
 
-    protected override int BiteGain => 18;
+    private const int HerbivoreBiteGain = 18;
+    protected override int BiteGain => HerbivoreBiteGain;
 
-    protected override int ReproduceThreshold => 60;
+    private const int HerbivoreReproduceThreshold = 60;
+    protected override int ReproduceThreshold => HerbivoreReproduceThreshold;
 
-    protected override int InitialEnergy => 30;
+    private const int HerbivoreInitialEnergy = 30;
+    protected override int InitialEnergy => HerbivoreInitialEnergy;
 
-    protected override char SelfGlyph => 'h';
+    protected override char DisplayGlyph => 'h';
 
-    public override System.ConsoleColor? Color => System.ConsoleColor.Yellow;
+    public override ConsoleColor? Color => ConsoleColor.Yellow;
 
     protected override Organism? FindPrey() => World.FindNearest<Plant>(Pos, Vision);
 
-    protected override Animal MakeChild(Point2 p) => new Herbivore(World, p);
+    private static readonly IAnimalFactory Factory = new HerbivoreFactory();
+
+    protected override Animal MakeChild(Point2 p)
+    {
+        return Factory.Create(World, p);
+    }
 }

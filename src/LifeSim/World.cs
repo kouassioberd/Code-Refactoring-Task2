@@ -41,7 +41,7 @@ public class World
             return;
         }
 
-        org.IsAlive = false;
+        org.Die();
         _grid.Remove(org.Pos);
     }
 
@@ -59,7 +59,7 @@ public class World
         }
 
         _grid.Remove(org.Pos);
-        org.Pos = wrappedPos;
+        org.MoveTo(wrappedPos);
         _grid[wrappedPos] = org;
     }
 
