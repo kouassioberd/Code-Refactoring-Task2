@@ -29,5 +29,10 @@ public class Herbivore : Animal
 
     protected override Organism? FindPrey() => World.FindNearest<Plant>(Pos, Vision);
 
-    protected override Animal MakeChild(Point2 p) => new Herbivore(World, p);
+    private static readonly IAnimalFactory Factory = new HerbivoreFactory();
+
+    protected override Animal MakeChild(Point2 p)
+    {
+        return Factory.Create(World, p);
+    }
 }
