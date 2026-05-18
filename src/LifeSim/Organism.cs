@@ -13,9 +13,19 @@ public abstract class Organism
 
     public World World { get; }
 
-    public Point2 Pos { get; set; }
+    public Point2 Pos { get; protected set; }
 
-    public bool IsAlive { get; set; } = true;
+    public bool IsAlive { get; private set; } = true;
+
+    protected void MoveTo(Point2 newPos)
+    {
+        Pos = World.Wrap(newPos);
+    }
+
+    public void Die()
+    {
+        IsAlive = false;
+    }
 
     public int Age { get; private set; }
 
