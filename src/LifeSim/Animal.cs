@@ -35,11 +35,23 @@ public abstract class Animal : Organism
     {
         base.Tick();
 
+        InitializeEnergy();
+        HuntOrMove();
+        ConsumeEnergy();
+        TryReproduce();
+        HandleDeath();
+    }
+
+    private void InitializeEnergy()
+    {
         if (Age == 1 && Energy == 0)
         {
             Energy = InitialEnergy;
         }
+    }
 
+    private void HuntOrMove()
+    {
         var prey = FindPrey();
         if (prey != null)
         {
@@ -54,9 +66,15 @@ public abstract class Animal : Organism
         {
             Wander();
         }
+    }
 
+    private void ConsumeEnergy()
+    {
         Energy -= MoveCost;
+    }
 
+    private void TryReproduce()
+    {
         if (Energy >= ReproduceThreshold)
         {
             var empty = World.EmptyNeighbors8(Pos).ToList();
@@ -67,8 +85,12 @@ public abstract class Animal : Organism
                 World.Add(child);
             }
         }
+    }
 
-        if (Energy <= 0 || (Age > MaxAge && Rand.Chance(0.02)))
+    private const double DeathChanceAfterMaxAge = 0.02;
+    private void HandleDeath()
+    {
+        if (Energy <= 0 || (Age > MaxAge && Rand.Chance(DeathChanceAfterMaxAge)))
         {
             World.Remove(this);
         }
