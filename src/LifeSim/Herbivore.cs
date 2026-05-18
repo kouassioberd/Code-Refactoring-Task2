@@ -1,4 +1,5 @@
 namespace LifeSim;
+using System;
 
 public class Herbivore : Animal
 {
@@ -24,7 +25,7 @@ public class Herbivore : Animal
 
     protected override char DisplayGlyph => 'h';
 
-    public override System.ConsoleColor? Color => System.ConsoleColor.Yellow;
+    public override ConsoleColor? Color => ConsoleColor.Yellow;
 
     protected override Organism? FindPrey() => World.FindNearest<Plant>(Pos, Vision);
 
