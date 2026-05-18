@@ -27,9 +27,9 @@ public abstract class Animal : Organism
 
     public override ConsoleColor? Color => ConsoleColor.White;
 
-    public int Energy { get; set; }
+    public int Energy { get;private set; }
 
-    public int MaxAge { get; set; } = 1000;
+    public int MaxAge { get;private set; } = 1000;
 
     public override void Tick()
     {
@@ -59,7 +59,7 @@ public abstract class Animal : Organism
             if (AreNeighborsOrSame(Pos, prey.Pos) && prey.IsAlive)
             {
                 World.Remove(prey);
-                Energy += BiteGain;
+                GainEnergy(BiteGain);
             }
         }
         else
@@ -70,7 +70,7 @@ public abstract class Animal : Organism
 
     private void ConsumeEnergy()
     {
-        Energy -= MoveCost;
+        ConsumeEnergy(MoveCost);
     }
 
     private void TryReproduce()
@@ -81,7 +81,7 @@ public abstract class Animal : Organism
             if (empty.Count > 0)
             {
                 var child = MakeChild(empty.Pick()!);
-                Energy /= 2;
+                SplitEnergyWithChild();
                 World.Add(child);
             }
         }
@@ -94,6 +94,21 @@ public abstract class Animal : Organism
         {
             World.Remove(this);
         }
+    }
+
+    protected void GainEnergy(int amount)
+    {
+        Energy += amount;
+    }
+
+    protected void ConsumeEnergy(int amount)
+    {
+        Energy -= amount;
+    }
+
+    private void SplitEnergyWithChild()
+    {
+        Energy /= 2;
     }
 
     protected abstract Organism? FindPrey();
