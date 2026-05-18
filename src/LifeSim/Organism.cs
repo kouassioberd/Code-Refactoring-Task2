@@ -37,5 +37,13 @@ public abstract class Organism
 
     public virtual void Tick() => Age++;
 
-    private static Gender PickGender() => Rand.Chance(0.5) ? Gender.Female : Gender.Male;
+    private const double FemaleChance = 0.5;
+
+    private static Gender PickGender()
+    {
+        return Rand.Chance(FemaleChance)
+            ? Gender.Female
+            : Gender.Male;
+    }
+
 }
