@@ -21,9 +21,9 @@ public abstract class Animal : Organism
 
     protected abstract int InitialEnergy { get; }
 
-    protected abstract char SelfGlyph { get; }
+    protected abstract char DisplayGlyph { get; }
 
-    public override char Glyph => SelfGlyph;
+    public override char Glyph => DisplayGlyph;
 
     public override ConsoleColor? Color => ConsoleColor.White;
 
