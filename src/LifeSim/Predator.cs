@@ -7,15 +7,20 @@ public class Predator : Animal
     {
     }
 
-    protected override int Vision => 12;
+    private const int PredatorVision = 12;
+    protected override int Vision => PredatorVision;
 
-    protected override int MoveCost => 3;
+    private const int PredatorMoveCost = 3;
+    protected override int MoveCost => PredatorMoveCost;
 
-    protected override int BiteGain => 28;
+    private const int PredatorBiteGain = 28;
+    protected override int BiteGain => PredatorBiteGain;
 
-    protected override int ReproduceThreshold => 80;
+    private const int PredatorReproduceThreshold = 80;
+    protected override int ReproduceThreshold => PredatorReproduceThreshold;
 
-    protected override int InitialEnergy => 40;
+    private const int PredatorInitialEnergy = 40;
+    protected override int InitialEnergy => PredatorInitialEnergy;
 
     protected override char DisplayGlyph => 'W';
 
