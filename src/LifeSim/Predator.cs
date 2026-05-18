@@ -17,7 +17,7 @@ public class Predator : Animal
 
     protected override int InitialEnergy => 40;
 
-    protected override char SelfGlyph => 'W';
+    protected override char DisplayGlyph => 'W';
 
     public override System.ConsoleColor? Color => System.ConsoleColor.Red;
 
